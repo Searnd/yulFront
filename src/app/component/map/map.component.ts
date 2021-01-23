@@ -39,7 +39,6 @@ export class MapComponent implements OnInit, OnDestroy {
       );
       this.avatarService.getAvatars().subscribe(avatars => {
         this.avatarList = avatars;
-        console.log(this.avatarList, avatars);
       },
       error => {
         console.error(error.message);
