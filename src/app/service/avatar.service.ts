@@ -24,7 +24,7 @@ export class AvatarService {
   }
 
   getAvatarByType(type: number): Observable<Avatar> {
-    return this.http.get<Avatar>('http://localhost:8080/api/avatar/'+ type).pipe(
+    return this.http.get<Avatar>('http://localhost:8080/api/avatar/type/'+ type).pipe(
       map(Avatar => Avatar),
     );
   }
