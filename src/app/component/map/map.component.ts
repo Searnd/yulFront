@@ -78,6 +78,9 @@ export class MapComponent implements OnInit, OnDestroy {
         this.displayAvatar(receivedMsg.message);
       } else {
         this.displayTime(receivedMsg.message);
+        const sub = this.avatarService.moveAvatars(this.avatarList || []).subscribe(() => {
+          sub.unsubscribe();
+        });
       }
     }
   };

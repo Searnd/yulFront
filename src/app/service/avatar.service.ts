@@ -29,7 +29,8 @@ export class AvatarService {
     );
   }
 
-  moveAvatars(avatars: Avatar[]): Observable<void> {
-    return this.http.post<void>('http://localhost:8080/api/avatar/move-avatars', avatars);
+  moveAvatars(avatars: Avatar[]): Observable<any> {
+    console.log("YES", avatars);
+    return this.http.post<any>('http://localhost:8080/api/avatar/move-avatars/', avatars);
   }
 }
