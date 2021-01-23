@@ -4,6 +4,7 @@ import {Avatar} from 'src/model/avatar';
 import {ActivatedRoute} from '@angular/router';
 import {MapService} from '../../service/map.service';
 import {MapModel} from '../../../model/map';
+import { AvatarService } from 'src/app/service/avatar.service';
 
 
 @Component({
@@ -19,7 +20,12 @@ export class MapComponent implements OnInit, OnDestroy {
   public avatarList: Avatar[] | undefined;
   mapResponse: MapModel | undefined;
 
-  constructor(private router: ActivatedRoute, private progressWebsocketService: ProgressWebsocketService, private mapService: MapService) {
+  constructor(
+    private router: ActivatedRoute,
+    private progressWebsocketService: ProgressWebsocketService,
+    private mapService: MapService,
+    private avatarService: AvatarService
+  ) {
     router.params.subscribe(val => {
       this.initProgressWebSocket();
       this.mapService.getMapById(val.id).subscribe(map => {
@@ -30,6 +36,14 @@ export class MapComponent implements OnInit, OnDestroy {
           this.mapResponse = undefined;
           console.log(error.message);
         }
+      );
+      this.avatarService.getAvatars().subscribe(avatars => {
+        this.avatarList = avatars;
+        console.log(this.avatarList, avatars);
+      },
+      error => {
+        console.error(error.message);
+      }
       );
     });
   }
