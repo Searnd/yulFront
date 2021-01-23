@@ -16,4 +16,20 @@ export class AvatarService {
       map(a => a)
     )
   }
+
+  getAvatarById(id: string): Observable<Avatar> {
+    return this.http.get<Avatar>('http://localhost:8080/api/avatar/' + id).pipe(
+      map(Avatar => Avatar),
+    );
+  }
+
+  getAvatarByType(type: number): Observable<Avatar> {
+    return this.http.get<Avatar>('http://localhost:8080/api/avatar/'+ type).pipe(
+      map(Avatar => Avatar),
+    );
+  }
+
+  moveAvatars(avatars: Avatar[]): Observable<void> {
+    return this.http.post<void>('http://localhost:8080/api/avatar/move-avatars', avatars);
+  }
 }
