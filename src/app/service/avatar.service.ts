@@ -35,11 +35,7 @@ export class AvatarService {
     return this.http.post<void>(ServerInfo.baseUrl + '/api/avatar/move-avatars/', avatars);
   }
 
-  resetAvatars(): Observable<void> {
-    return this.http.put<void>(ServerInfo.baseUrl + '/api/avatar/reset-avatars/', {});
-  }
-
-  resetLights(coords: Coord[]): Observable<void> {
-    return this.http.put<void>(ServerInfo.baseUrl + '/api/avatar/reset-lights/', coords);
+  resetAvatars(coords: Coord[]): Observable<void> {
+    return this.http.put<void>(ServerInfo.baseUrl + '/api/avatar/reset-avatars/', coords);
   }
 }

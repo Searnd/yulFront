@@ -53,7 +53,7 @@ export class MapComponent implements OnInit, OnDestroy {
               }
             });
           });
-          const resetLightsSub = this.avatarService.resetLights(coordsCroisements).subscribe(() => {
+          const resetAvatarsSub = this.avatarService.resetAvatars(coordsCroisements).subscribe(() => {
             this.avatarService.getAvatars().subscribe(avatars => {
               this.avatarList = avatars;
             },
@@ -61,7 +61,7 @@ export class MapComponent implements OnInit, OnDestroy {
               console.error(error.message);
             }
             );
-            resetLightsSub.unsubscribe();
+            resetAvatarsSub.unsubscribe();
           },
           console.error);
         },
@@ -70,7 +70,6 @@ export class MapComponent implements OnInit, OnDestroy {
           console.log(error.message);
         }
       );
-      this.avatarService.resetAvatars().subscribe(() => {}, console.error);
     });
   }
 
