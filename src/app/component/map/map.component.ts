@@ -38,10 +38,10 @@ export class MapComponent implements OnInit, OnDestroy {
             row.forEach((col, x) => {
               if (/croisement.png$/.test(col.image || '')) {
                 if (y > 0 && verticalRouteRegex.test(map.square![y-1][x].image || '')) {
-                  coordsCroisements.push({x, y: y-1});
+                  coordsCroisements.push({x, y: y-1, isVertical: true});
                 }
                 if (y < 29 && verticalRouteRegex.test(map.square![y+1][x].image || '')) {
-                  coordsCroisements.push({x, y: y+1});
+                  coordsCroisements.push({x, y: y+1, isVertical: true});
                 }
                 if (x > 0 && horizontalRouteRegex.test(map.square![y][x-1].image || '')) {
                   coordsCroisements.push({x: x-1, y});
