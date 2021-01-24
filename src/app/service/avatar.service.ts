@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Avatar } from 'src/model/avatar';
+import { ServerInfo } from '../server-info';
 
 @Injectable({
   providedIn: 'root'
@@ -18,19 +19,22 @@ export class AvatarService {
   }
 
   getAvatarById(id: string): Observable<Avatar> {
-    return this.http.get<Avatar>('http://localhost:8080/api/avatar/' + id).pipe(
+    return this.http.get<Avatar>(ServerInfo.baseUrl + '/api/avatar/' + id).pipe(
       map(Avatar => Avatar),
     );
   }
 
   getAvatarByType(type: number): Observable<Avatar> {
-    return this.http.get<Avatar>('http://localhost:8080/api/avatar/type/'+ type).pipe(
+    return this.http.get<Avatar>(ServerInfo.baseUrl + '/api/avatar/type/'+ type).pipe(
       map(Avatar => Avatar),
     );
   }
 
-  moveAvatars(avatars: Avatar[]): Observable<any> {
-    console.log("YES", avatars);
-    return this.http.post<any>('http://localhost:8080/api/avatar/move-avatars/', avatars);
+  moveAvatars(avatars: Avatar[]): Observable<void> {
+    return this.http.post<void>(ServerInfo.baseUrl + '/api/avatar/move-avatars/', avatars);
+  }
+
+  resetAvatars(): Observable<void> {
+    return this.http.put<void>(ServerInfo.baseUrl + '/api/avatar/reset-avatars/', {});
   }
 }
