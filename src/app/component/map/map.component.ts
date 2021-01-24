@@ -31,6 +31,7 @@ export class MapComponent implements OnInit, OnDestroy {
       this.mapService.getMapById(val.id).subscribe(map => {
           this.mapResponse = map;
           console.log(this.mapResponse);
+          // Send traffic light placement to server
           const coordsCroisements: Coord[] = [];
           const verticalRouteRegex = /route_vert/;
           const horizontalRouteRegex = /route_hor/;
