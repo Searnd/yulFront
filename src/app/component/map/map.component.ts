@@ -31,11 +31,25 @@ export class MapComponent implements OnInit, OnDestroy {
       this.mapService.getMapById(val.id).subscribe(map => {
           this.mapResponse = map;
           console.log(this.mapResponse);
+          // Send traffic light placement to server
           const coordsCroisements: Coord[] = [];
+          const verticalRouteRegex = /route_vert/;
+          const horizontalRouteRegex = /route_hor/;
           map.square?.forEach((row, y) => {
             row.forEach((col, x) => {
               if (/croisement.png$/.test(col.image || '')) {
-                coordsCroisements.push({x, y});
+                if (y > 0 && verticalRouteRegex.test(map.square![y-1][x].image || '')) {
+                  coordsCroisements.push({x, y: y-1, isVertical: true});
+                }
+                if (y < 29 && verticalRouteRegex.test(map.square![y+1][x].image || '')) {
+                  coordsCroisements.push({x, y: y+1, isVertical: true});
+                }
+                if (x > 0 && horizontalRouteRegex.test(map.square![y][x-1].image || '')) {
+                  coordsCroisements.push({x: x-1, y});
+                }
+                if (x < 29 && horizontalRouteRegex.test(map.square![y][x+1].image || '')) {
+                  coordsCroisements.push({x: x+1, y});
+                }
               }
             });
           });
