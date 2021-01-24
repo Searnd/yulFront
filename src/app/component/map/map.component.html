@@ -8,7 +8,7 @@
     <span *ngIf="tabSquare != null">
       <span *ngFor="let square of tabSquare; let x = index" class="spanLine">
         <img *ngIf="square.image != undefined" alt="image" class="image1" src="{{square.image}}"/>
-        <img *ngIf="avatarList !== undefined" alt="image" class="image2" src="{{display2(x, y, avatarList)}}" />
+        <img *ngIf="avatarList !== undefined" alt="image" [ngClass]="{'light': isLight(x, y, avatarList)}" class="image2"  src="{{display2(x, y, avatarList)}}" />
       </span>
     </span>
     <br/>

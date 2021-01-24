@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Avatar } from 'src/model/avatar';
 import { ServerInfo } from '../server-info';
+import { Coord } from 'src/model/coord';
 
 @Injectable({
   providedIn: 'root'
@@ -36,5 +37,9 @@ export class AvatarService {
 
   resetAvatars(): Observable<void> {
     return this.http.put<void>(ServerInfo.baseUrl + '/api/avatar/reset-avatars/', {});
+  }
+
+  resetLights(coords: Coord[]): Observable<void> {
+    return this.http.put<void>(ServerInfo.baseUrl + '/api/avatar/reset-lights/', coords);
   }
 }

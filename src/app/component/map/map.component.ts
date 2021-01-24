@@ -5,8 +5,7 @@ import {ActivatedRoute} from '@angular/router';
 import {MapService} from '../../service/map.service';
 import {MapModel} from '../../../model/map';
 import { AvatarService } from 'src/app/service/avatar.service';
-
-
+import { Coord } from 'src/model/coord';
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
@@ -18,6 +17,7 @@ export class MapComponent implements OnInit, OnDestroy {
   private obs: any;
   public timer: string | undefined;
   public avatarList: Avatar[] | undefined;
+  public lightList: Avatar[] | undefined;
   mapResponse: MapModel | undefined;
 
   constructor(
@@ -31,6 +31,25 @@ export class MapComponent implements OnInit, OnDestroy {
       this.mapService.getMapById(val.id).subscribe(map => {
           this.mapResponse = map;
           console.log(this.mapResponse);
+          const coordsCroisements: Coord[] = [];
+          map.square?.forEach((row, y) => {
+            row.forEach((col, x) => {
+              if (/croisement.png$/.test(col.image || '')) {
+                coordsCroisements.push({x, y});
+              }
+            });
+          });
+          const resetLightsSub = this.avatarService.resetLights(coordsCroisements).subscribe(() => {
+            this.avatarService.getAvatars().subscribe(avatars => {
+              this.avatarList = avatars;
+            },
+            error => {
+              console.error(error.message);
+            }
+            );
+            resetLightsSub.unsubscribe();
+          },
+          console.error);
         },
         error => {
           this.mapResponse = undefined;
@@ -38,13 +57,6 @@ export class MapComponent implements OnInit, OnDestroy {
         }
       );
       this.avatarService.resetAvatars().subscribe(() => {}, console.error);
-      this.avatarService.getAvatars().subscribe(avatars => {
-        this.avatarList = avatars;
-      },
-      error => {
-        console.error(error.message);
-      }
-      );
     });
   }
 
@@ -104,6 +116,12 @@ export class MapComponent implements OnInit, OnDestroy {
     return '../assets/images/vide.png';
   }
 
+  isLight(x: number, y: number, avatars: Avatar[]): boolean {
+    return avatars?.some((avatar) => {
+      return avatar.x === x && avatar.y === y && /-light.png$/.test(avatar.image || "");
+    });
+  }
+
 
   displayTime(second: number): void {
     const hours = Math.floor(second / 60 / 60);
@@ -114,7 +132,6 @@ export class MapComponent implements OnInit, OnDestroy {
 
   displayAvatar(listAvatar: any): void {
     this.avatarList = (listAvatar as Avatar[]);
-    console.log(this.avatarList);
   }
 
 
